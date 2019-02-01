@@ -22,3 +22,10 @@ from thompson_sampling.bernoulli import BernoulliExperiment
 
 experiment = BernoulliExperiment(priors=[{"a":10, "b":5}, {"a":1, "b":2}])
 ```
+
+## Installation
+
+### Pip 
+```
+pip install thompson-sampling
+```
