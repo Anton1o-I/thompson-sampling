@@ -1,15 +1,15 @@
 from typing import List
-from numpy.random import binomial
-from numpy import mean
+from numpy.random import poisson
+from numpy import mean, percentile
 import operator
 from thompson_sampling.base import BaseThompsonSampling
 
 
-class BernoulliExperiment(BaseThompsonSampling):
+class PoissonExperiment(BaseThompsonSampling):
     def __init__(self, arms: int = None, priors: List[dict] = None):
         super().__init__()
-        default = {"a": 1, "b": 1}
-        self._posterior = "beta"
+        default = {"shape": 0.001, "scale": 1000}
+        self._posterior = "gamma"
         if arms is None and priors is None:
             raise ValueError("Must have either arms or priors specified")
         if arms:
@@ -25,10 +25,11 @@ class BernoulliExperiment(BaseThompsonSampling):
         outcomes = [{"label": "A", "reward": 1}, {"label":"B", "reward":0}]
 
         """
-
         for result in outcomes:
-            self.posteriors[result["label"]]["a"] += result["reward"]
-            self.posteriors[result["label"]]["b"] += 1 - result["reward"]
+            self.posteriors[result["label"]]["shape"] += result["reward"]
+            self.posteriors[result["label"]]["scale"] = 1 / (
+                1 / self.posteriors[result["label"]]["scale"] + 1
+            )
         return self
 
     def get_ppd(self, size, label):
@@ -38,9 +39,8 @@ class BernoulliExperiment(BaseThompsonSampling):
         """
         pred_outcome = [
             int(
-                binomial(
-                    n=1,
-                    p=self._avail_posteriors[self._posterior](
+                poisson(
+                    lam=self._avail_posteriors[self._posterior](
                         size=1, **self.posteriors[label]
                     ),
                     size=1,
@@ -49,8 +49,10 @@ class BernoulliExperiment(BaseThompsonSampling):
             for _ in range(size)
         ]
         summary_stats = {
-            "Count - Success": sum(pred_outcome),
-            "Count - Fail": len(pred_outcome) - sum(pred_outcome),
+            "95% Credible Interval": (
+                percentile(pred_outcome, 2.5),
+                percentile(pred_outcome, 97.5),
+            ),
             "mean": mean(pred_outcome),
         }
         return summary_stats

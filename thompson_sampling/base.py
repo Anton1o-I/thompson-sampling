@@ -10,8 +10,10 @@ class BaseThompsonSampling:
         self._avail_posteriors = {"beta": partial(beta), "gamma": partial(gamma)}
         self._posterior = ""
 
-    def _sample_posterior(self, size: int = None):
-        return self.avail_posteriors[self._posterior](**self.posteriors[key])
+    def _sample_posterior(self, size: int = None, key: str = None):
+        return self._avail_posteriors[self._posterior](
+            size=size, **self.posteriors[key]
+        )
 
     def get_action(self):
         """
@@ -23,13 +25,15 @@ class BaseThompsonSampling:
 
         theta_est = {}
         for key, _ in self.posteriors.items():
-            theta_est[key] = _sample_posterior(1)
+            theta_est[key] = self._sample_posterior(1, key)
         return max(theta_est.items(), key=operator.itemgetter(1))[0]
 
     def plot_posterior(self):
         plot_values = {
-            key: _sample_posterior(10000) for key, _ in self.posteriors.items()
+            key: self._sample_posterior(10000, key)
+            for key, _ in self.posteriors.items()
         }
+
         for key, sim_array in plot_values.items():
             sns.distplot(sim_array, hist=False, label=key)
         plt.title("Posterior Distributions")
