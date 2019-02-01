@@ -15,7 +15,7 @@ class BaseThompsonSampling:
             size=size, **self.posteriors[key]
         )
 
-    def get_action(self):
+    def pull_arm(self):
         """
         Pull the slot machine arm
 
