@@ -1,0 +1,13 @@
+*.egg-info
+*.ipynb
+.ipynb_checkpoints
+.DS_Store
+*.pdf
+Pipfile.lock
+Pipfile
+pdf_exports/
+.vscode
+__pycache__/
+*.py[cod]
+*$py.class
+
