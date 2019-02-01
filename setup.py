@@ -5,6 +5,7 @@ setup(
     version="0.0.0",
     description="Thompson Sampling",
     author="Anton1o_I",
+    author_email="a.iniguez21@gmail.com",
     packages=find_packages(),
     license="LICENSE.txt",
     long_description=open("README.md").read(),
