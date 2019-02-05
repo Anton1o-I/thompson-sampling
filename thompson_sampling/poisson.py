@@ -6,7 +6,9 @@ from thompson_sampling.base import BaseThompsonSampling
 
 
 class PoissonExperiment(BaseThompsonSampling):
-    def __init__(self, arms: int = None, priors: List[dict] = None):
+    def __init__(
+        self, arms: int = None, priors: List[dict] = None, labels: list = None
+    ):
         super().__init__()
         default = {"shape": 0.001, "scale": 1000}
         self._posterior = "gamma"
