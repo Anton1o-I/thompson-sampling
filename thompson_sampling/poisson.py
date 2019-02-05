@@ -10,12 +10,20 @@ class PoissonExperiment(BaseThompsonSampling):
         super().__init__()
         default = {"shape": 0.001, "scale": 1000}
         self._posterior = "gamma"
+        if arms != len(labels) | len(priors) != len(labels):
+            raise ValueError(f"Number of labels and arms specified do not match.")
         if arms is None and priors is None:
             raise ValueError("Must have either arms or priors specified")
         if arms:
-            self.posteriors = {f"option_{i+1}": default.copy() for i in range(arms)}
+            self.posteriors = {
+                (f"{labels[i]}" if labels else f"option{i}"): default.copy()
+                for i in range(arms)
+            }
         elif priors:
-            self.posteriors = {f"option_{i+1}": items.copy() for items in priors}
+            self.posteriors = {
+                (f"{labels[i]}" if labels else f"option{i}"): items.copy()
+                for i, items in enumerate(priors)
+            }
 
     def update_posterior(self, outcomes: List[dict]):
         """
