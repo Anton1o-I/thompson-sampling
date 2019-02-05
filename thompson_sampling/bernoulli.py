@@ -1,4 +1,4 @@
-from typing import List
+
 from numpy.random import binomial
 from numpy import mean
 import operator
@@ -9,23 +9,10 @@ class BernoulliExperiment(BaseThompsonSampling):
     def __init__(
         self, arms: int = None, priors: List[dict] = None, labels: list = None
     ):
-        super().__init__()
-        default = {"a": 1, "b": 1}
+
+        self._default = {"a": 1, "b": 1}
         self._posterior = "beta"
-        if arms != len(labels) | len(priors) != len(labels):
-            raise ValueError(f"Number of labels and arms specified do not match.")
-        if arms is None and priors is None:
-            raise ValueError("Must have either number of arms or priors specified")
-        if arms:
-            self.posteriors = {
-                (f"{labels[i]}" if labels else f"option{i}"): default.copy()
-                for i in range(arms)
-            }
-        elif priors:
-            self.posteriors = {
-                (f"{labels[i]}" if labels else f"option{i}"): items.copy()
-                for i, items in enumerate(priors)
-            }
+        super().__init__(arms, priors, labels)
 
     def update_posterior(self, outcomes: List[dict]):
         """

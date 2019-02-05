@@ -9,23 +9,10 @@ class PoissonExperiment(BaseThompsonSampling):
     def __init__(
         self, arms: int = None, priors: List[dict] = None, labels: list = None
     ):
-        super().__init__()
-        default = {"shape": 0.001, "scale": 1000}
+
+        self._default = {"shape": 0.001, "scale": 1000}
         self._posterior = "gamma"
-        if arms != len(labels) | len(priors) != len(labels):
-            raise ValueError(f"Number of labels and arms specified do not match.")
-        if arms is None and priors is None:
-            raise ValueError("Must have either arms or priors specified")
-        if arms:
-            self.posteriors = {
-                (f"{labels[i]}" if labels else f"option{i}"): default.copy()
-                for i in range(arms)
-            }
-        elif priors:
-            self.posteriors = {
-                (f"{labels[i]}" if labels else f"option{i}"): items.copy()
-                for i, items in enumerate(priors)
-            }
+        super().__init__(arms, priors, labels)
 
     def update_posterior(self, outcomes: List[dict]):
         """
@@ -58,6 +45,7 @@ class PoissonExperiment(BaseThompsonSampling):
             )
             for _ in range(size)
         ]
+
         summary_stats = {
             "95% Credible Interval": (
                 percentile(pred_outcome, 2.5),
