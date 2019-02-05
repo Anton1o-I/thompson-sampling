@@ -1,5 +1,5 @@
 # thompson-sampling
-Thompson Sampling Experiment in Python
+Thompson Sampling Multi-Armed Bandit for Python
 
 This project is an implementation of a Thompson Sampling approach to a Multi-Armed Bandit. The goal of this project is to easily create and maintain Thompson Sampling experiments.
 
