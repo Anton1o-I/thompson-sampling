@@ -13,4 +13,4 @@ __pycache__/
 build/
 dist/
 .coverage
-.pytest_cache*
+.pytest_cache/*
