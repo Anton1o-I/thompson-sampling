@@ -49,11 +49,12 @@ class PoissonExperiment(BaseThompsonSampling):
             ]
 
             summary_stats = {
+                "Label": k,
                 "95% Credible Interval": (
-                    percentile(pred_outcome, 2.5),
-                    percentile(pred_outcome, 97.5),
+                    round(percentile(pred_outcome, 2.5), 3),
+                    round(percentile(pred_outcome, 97.5), 3),
                 ),
-                "mean": mean(pred_outcome),
+                "mean": round(mean(pred_outcome), 3),
             }
             ppd_stats.append(summary_stats)
         return ppd_stats
