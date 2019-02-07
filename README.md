@@ -28,9 +28,9 @@ experiment = BernoulliExperiment(priors=pr)
 ```
 
 ### Getting an action:
-"Pull the Arm" of the multi-armed bandit to see which option to choose:
+Randomly chooses which arm to "pull" in the multi-armed bandit:
 ```python
-experiment.get_action()
+experiment.choose_arm()
 ```
 
 ### Updating reward:
