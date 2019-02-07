@@ -57,8 +57,6 @@ class BasePrior:
 class BaseThompsonSampling:
     def __init__(self, arms: int = None, priors: BasePrior = None, labels: list = None):
         self._avail_posteriors = {"beta": partial(beta), "gamma": partial(gamma)}
-        self._default = {}
-        self._posterior = ""
         if arms is None and priors is None:
             raise ValueError("Must have either arms or priors specified")
         if priors:

@@ -34,23 +34,26 @@ class PoissonExperiment(BaseThompsonSampling):
         Simulates the posterior predictive distribution for a given
         label and returns the mean, and 95% credible interval.
         """
-        pred_outcome = [
-            int(
-                poisson(
-                    lam=self._avail_posteriors[self._posterior](
-                        size=1, **self.posteriors[label]
-                    ),
-                    size=1,
+        ppd_stats = []
+        for k, _ in self.posteriors.items():
+            pred_outcome = [
+                int(
+                    poisson(
+                        lam=self._avail_posteriors[self._posterior](
+                            size=1, **self.posteriors[k]
+                        ),
+                        size=1,
+                    )
                 )
-            )
-            for _ in range(size)
-        ]
+                for _ in range(size)
+            ]
 
-        summary_stats = {
-            "95% Credible Interval": (
-                percentile(pred_outcome, 2.5),
-                percentile(pred_outcome, 97.5),
-            ),
-            "mean": mean(pred_outcome),
-        }
-        return summary_stats
+            summary_stats = {
+                "95% Credible Interval": (
+                    percentile(pred_outcome, 2.5),
+                    percentile(pred_outcome, 97.5),
+                ),
+                "mean": mean(pred_outcome),
+            }
+            ppd_stats.append(summary_stats)
+        return ppd_stats
