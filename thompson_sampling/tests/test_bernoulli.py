@@ -36,7 +36,7 @@ class TestBernoulliExperiment:
 
     def test_pull_arm(self):
         exper = BernoulliExperiment(3)
-        assert exper.pull_arm() in [key for key, _ in exper.posteriors.items()]
+        assert exper.choose_arm() in [key for key, _ in exper.posteriors.items()]
 
     def test_get_ppd(self):
         exper = BernoulliExperiment(3)

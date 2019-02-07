@@ -31,7 +31,6 @@ class BasePrior:
     ) -> List[dict]:
         """
         Allows for a group of priors to be specified at once
-
         information: DataFrame
         """
         params = [means, variances, effective_sizes, labels]
@@ -72,9 +71,9 @@ class BaseThompsonSampling:
             size=size, **self.posteriors[key]
         )
 
-    def pull_arm(self):
+    def choose_arm(self):
         """
-        Pull the slot machine arm
+        Choose which arm to pull
 
         Given the current posterior distributions this function will sample from
         the posterior and find the max theta of all the available options
