@@ -14,7 +14,7 @@ class BernoulliExperiment(BaseThompsonSampling):
         self._posterior = "beta"
         super().__init__(arms, priors, labels)
 
-    def update_posterior(self, outcomes: List[dict]):
+    def add_rewards(self, outcomes: List[dict]):
         """
         Takes in a list of dictionaries with the results and updates the Posterior
         distribution for the label.

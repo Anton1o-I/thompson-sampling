@@ -14,7 +14,7 @@ class PoissonExperiment(BaseThompsonSampling):
         self._posterior = "gamma"
         super().__init__(arms, priors, labels)
 
-    def update_posterior(self, outcomes: List[dict]):
+    def add_rewards(self, outcomes: List[dict]):
         """
         Takes in a list of dictionaries with the results and updates the Posterior
         distribution for the label.
@@ -24,12 +24,12 @@ class PoissonExperiment(BaseThompsonSampling):
         """
         for result in outcomes:
             self.posteriors[result["label"]]["shape"] += result["reward"]
-            self.posteriors[result["label"]]["scale"] = 1 / (
-                1 / self.posteriors[result["label"]]["scale"] + 1
+            self.posteriors[result["label"]]["scale"] = round(
+                1 / (1 / self.posteriors[result["label"]]["scale"] + 1), 4
             )
         return self
 
-    def get_ppd(self, size, label):
+    def get_ppd(self, size):
         """
         Simulates the posterior predictive distribution for a given
         label and returns the mean, and 95% credible interval.

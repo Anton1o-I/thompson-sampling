@@ -25,7 +25,7 @@ class TestBernoulliExperiment:
 
     def test_update_posterior(self):
         exper = BernoulliExperiment(3)
-        exper.update_posterior(
+        exper.add_rewards(
             [{"label": "option1", "reward": 1}, {"label": "option2", "reward": 0}]
         )
         assert exper.posteriors == {
