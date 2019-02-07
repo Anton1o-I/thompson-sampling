@@ -3,12 +3,11 @@ from numpy.random import binomial
 from numpy import mean
 import operator
 from thompson_sampling.base import BaseThompsonSampling
+from thompson_sampling.priors import BetaPrior
 
 
 class BernoulliExperiment(BaseThompsonSampling):
-    def __init__(
-        self, arms: int = None, priors: List[dict] = None, labels: list = None
-    ):
+    def __init__(self, arms: int = None, priors: Priors = None, labels: list = None):
 
         self._default = {"a": 1, "b": 1}
         self._posterior = "beta"

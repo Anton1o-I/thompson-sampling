@@ -21,11 +21,11 @@ class BetaPrior(BasePrior):
             raise ValueError(
                 f"variance: {variance} must be in (0,{round(min([0.25, mean*(1-mean)]), 3)})"
             )
-        if sample_size <= 0:
-            raise ValueError(f"sample_size: {sample_size} must be greater then 0")
+        if effective_size <= 0:
+            raise ValueError(f"effective_size: {effective_size} must be greater then 0")
         alpha = round((((1 - mean) / variance) - (1 / mean)) * (mean ** 2), 3)
         beta = round(alpha * (1 / mean - 1), 3)
-        ratio = sample_size / (alpha + beta)  # sample size = beta+alpha
+        ratio = effective_size / (alpha + beta)  # sample size = beta+alpha
         return {"a": round(alpha * ratio), "b": round(beta * ratio)}
 
 
