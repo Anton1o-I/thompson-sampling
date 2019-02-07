@@ -41,13 +41,13 @@ class BaseThompsonSampling:
         self._avail_posteriors = {"beta": partial(beta), "gamma": partial(gamma)}
         if arms is None and priors is None:
             raise ValueError("Must have either arms or priors specified")
-        if arms:
+        if priors:
+            self.posteriors = priors.priors
+        elif arms:
             self.posteriors = {
                 (f"{labels[i]}" if labels else f"option{i+1}"): self._default.copy()
                 for i in range(arms)
             }
-        elif priors:
-            self.posteriors = priors.priors
 
     def _sample_posterior(self, size: int = None, key: str = None):
         return self._avail_posteriors[self._posterior](
