@@ -1,36 +1,7 @@
 from typing import List
-from pandas import Series, DataFrame
+from thompson_sampling.base import BasePrior
 
 # TODO build out functionality to add priors
-
-
-class BasePrior:
-    def __init__(self):
-        self.priors = []
-
-    def _param_calculator(self, *args):
-        return self
-
-    def add_one(
-        self, mean: int, variance: int, effective_size: int, label: str
-    ) -> List[dict]:
-        """
-        Allows for individual priors to be specified and added to the priors list
-        """
-
-        new_prior = {label: self._param_calculator(mean, variance, effective_size)}
-        self.priors.append(new_prior)
-        return self
-
-    def add_multiple(
-        self, means: Series, variances: Series, sample_sizes: Series, labels: Series
-    ) -> List[dict]:
-        """
-        Allows for a group of priors to be specified at once
-
-        information: DataFrame
-        """
-        pass
 
 
 class BetaPrior(BasePrior):
@@ -60,13 +31,22 @@ class BetaPrior(BasePrior):
 
 class GammaPrior(BasePrior):
     def __init__(self):
-        self.priors = []
+        super().__init__()
 
-    def _param_calculator(self, mean, variance, effective_size: None):
-        if any([mean <= 0, variance <= 0]):
-            raise ValueError("Parameters must be positive")
-        rate = mean / variance
-        shape = mean ** 2 / variance
-        scale = 1 / rate
+    def _param_calculator(self, mean, variance: None, effective_size: None):
+        if variance:
+            if any([mean <= 0, variance <= 0]):
+                raise ValueError("Parameters must be positive")
+            rate = mean / variance
+            shape = mean ** 2 / variance
+            scale = 1 / rate
+        if effective_size and not variance:
+            if any([mean <= 0, effective_size <= 0]):
+                raise ValueError("Parameters must be positive")
+            rate = effective_size
+            shape = mean * effective_size
+            scale = 1 / rate
+        elif all([not variance, not effective_size]):
+            raise ValueError("Must specify either variance or effective size")
         return {"shape": round(shape), "scale": round(scale, 3)}
 
