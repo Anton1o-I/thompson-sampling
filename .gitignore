@@ -10,4 +10,7 @@ pdf_exports/
 __pycache__/
 *.py[cod]
 *$py.class
-
+build/
+dist/
+.coverage
+.pytest_cache/*
