@@ -5,6 +5,7 @@ import operator
 import seaborn as sns
 import matplotlib.pyplot as plt
 from typing import List
+from itertools import combinations
 
 
 class BasePrior:
@@ -15,7 +16,7 @@ class BasePrior:
         return self
 
     def add_one(
-        self, mean: int, variance: int, effective_size: int, label: str
+        self, mean: float, variance: float, effective_size: int, label: str
     ) -> dict:
         """
         Allows for individual priors to be specified and added to the priors list
@@ -26,19 +27,38 @@ class BasePrior:
         return self
 
     def add_multiple(
-        self, means: Series, variances: Series, sample_sizes: Series, labels: Series
+        self, means: Series, variances: Series, effective_sizes: Series, labels: Series
     ) -> List[dict]:
         """
         Allows for a group of priors to be specified at once
 
         information: DataFrame
         """
-        pass
+        params = [means, variances, effective_sizes, labels]
+        if any([len(a) != len(b) for a, b in list(combinations(params, 2))]):
+            message = (
+                f"Lengths of given series do not match. Lengths - "
+                f"mean:{len(means)}, "
+                f"variance:{len(variances)}, "
+                f"effective_size:{len(effective_sizes)}, "
+                f"labels:{len(labels)}"
+            )
+            raise ValueError(message)
+        for i, _ in enumerate(labels):
+            new_prior = {
+                labels[i]: self._param_calculator(
+                    means[i], variances[i], effective_sizes[i]
+                )
+            }
+            self.priors.update(new_prior)
+        return self
 
 
 class BaseThompsonSampling:
     def __init__(self, arms: int = None, priors: BasePrior = None, labels: list = None):
         self._avail_posteriors = {"beta": partial(beta), "gamma": partial(gamma)}
+        self._default = {}
+        self._posterior = ""
         if arms is None and priors is None:
             raise ValueError("Must have either arms or priors specified")
         if priors:
