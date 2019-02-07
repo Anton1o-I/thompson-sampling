@@ -48,6 +48,8 @@ class BernoulliExperiment(BaseThompsonSampling):
                 for _ in range(size)
             ]
             summary_stats = {
+
+                "Label": k,
                 "Percentage - Success": sum(pred_outcome) / size,
                 "Percentage - Fail": (len(pred_outcome) - sum(pred_outcome)) / size,
             }
