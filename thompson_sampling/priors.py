@@ -12,13 +12,13 @@ class BasePrior:
         return self
 
     def add_one(
-        self, mean: int, variance: int, sample_size: int, label: str
+        self, mean: int, variance: int, effective_size: int, label: str
     ) -> List[dict]:
         """
         Allows for individual priors to be specified and added to the priors list
         """
 
-        new_prior = {label: self._param_calculator(mean, variance, sample_size)}
+        new_prior = {label: self._param_calculator(mean, variance, effective_size)}
         self.priors.append(new_prior)
         return self
 
@@ -40,7 +40,7 @@ class BetaPrior(BasePrior):
         """
         super().__init__()
 
-    def _param_calculator(self, mean: float, variance: float, sample_size: int):
+    def _param_calculator(self, mean: float, variance: float, effective_size: int):
         """
         Hidden method that creates the beta prior given specifications
         """
@@ -55,16 +55,18 @@ class BetaPrior(BasePrior):
         alpha = round((((1 - mean) / variance) - (1 / mean)) * (mean ** 2), 3)
         beta = round(alpha * (1 / mean - 1), 3)
         ratio = sample_size / (alpha + beta)  # sample size = beta+alpha
-        return {"a": alpha * ratio, "b": beta * ratio}
+        return {"a": round(alpha * ratio), "b": round(beta * ratio)}
 
 
-class GammaPrior(self):
+class GammaPrior(BasePrior):
     def __init__(self):
         self.priors = []
 
-    def _param_calculator(self, mean, variance, sample_size):
-        shape = variance/mean
-        scale = mean**2/variance
-        return ({"shape": shape, "scale": scale)
-
+    def _param_calculator(self, mean, variance, effective_size: None):
+        if any([mean <= 0, variance <= 0]):
+            raise ValueError("Parameters must be positive")
+        rate = mean / variance
+        shape = mean ** 2 / variance
+        scale = 1 / rate
+        return {"shape": round(shape), "scale": round(scale, 3)}
 
