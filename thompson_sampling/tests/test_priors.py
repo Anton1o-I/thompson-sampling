@@ -36,8 +36,6 @@ class TestBetaPrior:
         labels = Series(["option1", "option2"])
         gen.add_multiple(means, variances, effective_sizes, labels)
         assert len(gen.priors) == 2
-        assert isinstance(gen.priors, dict)
-        assert isinstance(gen.priors["option1"], dict)
         assert gen.priors == {
             "option1": {"a": 2.0, "b": 8.0},
             "option2": {"a": 5.0, "b": 5.0},
