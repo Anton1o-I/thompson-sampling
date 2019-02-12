@@ -64,8 +64,8 @@ class TestGammaPrior:
         assert isinstance(gen.priors, dict)
         assert isinstance(gen.priors["option1"], dict)
         assert gen.priors == {
-            "option0": {"shape": 500, "scale": 0.2},
-            "option1": {"shape": 2000, "scale": 0.05},
+            "option0": {"shape": 500, "scale": .2},
+            "option1": {"shape": 2000, "scale": .05},
         }
 
     def test_add_one_value_errors(self):

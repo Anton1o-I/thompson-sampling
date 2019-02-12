@@ -42,3 +42,4 @@ class TestBernoulliExperiment:
         exper = PoissonExperiment(3)
         assert isinstance(exper.get_ppd(size=10000), list)
         assert len(exper.get_ppd(size=1000)) == len(exper.posteriors)
+

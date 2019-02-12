@@ -3,13 +3,13 @@ from numpy.random import poisson
 from numpy import mean, percentile
 import operator
 from thompson_sampling.base import BaseThompsonSampling
-from thompson_sampling.priors import GammaPrior
 
 
 class PoissonExperiment(BaseThompsonSampling):
     def __init__(
-        self, arms: int = None, priors: GammaPrior = None, labels: list = None
+        self, arms: int = None, priors: List[dict] = None, labels: list = None
     ):
+
         self._default = {"shape": 0.001, "scale": 1000}
         self._posterior = "gamma"
         super().__init__(arms, priors, labels)

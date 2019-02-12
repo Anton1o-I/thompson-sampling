@@ -1,3 +1,4 @@
+
 from numpy.random import binomial
 from numpy import mean
 import operator
@@ -8,6 +9,7 @@ from typing import List
 
 class BernoulliExperiment(BaseThompsonSampling):
     def __init__(self, arms: int = None, priors: BetaPrior = None, labels: list = None):
+
         self._default = {"a": 1, "b": 1}
         self._posterior = "beta"
         super().__init__(arms, priors, labels)
@@ -46,6 +48,7 @@ class BernoulliExperiment(BaseThompsonSampling):
                 for _ in range(size)
             ]
             summary_stats = {
+
                 "Label": k,
                 "Percentage - Success": sum(pred_outcome) / size,
                 "Percentage - Fail": (len(pred_outcome) - sum(pred_outcome)) / size,

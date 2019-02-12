@@ -16,4 +16,3 @@ dist/
 .pytest_cache/*
 !Sample_Bernoulli.ipynb
 !Sample_Poisson.ipynb
-!Sample_Exponential.ipynb
