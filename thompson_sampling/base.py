@@ -95,4 +95,3 @@ class BaseThompsonSampling:
         plt.title("Posterior Distributions")
         plt.legend()
         plt.xlabel("Parameter Value")
-

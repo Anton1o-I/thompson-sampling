@@ -12,4 +12,3 @@ setup(
     install_requires=["typing", "numpy", "seaborn", "matplotlib", "pandas"],
     tests_require=["pytest"],
 )
-
