@@ -38,8 +38,9 @@ class ExponentialExperiment(BaseThompsonSampling):
         for result in outcomes:
             self.posteriors[result["label"]]["shape"] += 1
             self.posteriors[result["label"]]["scale"] = round(
-                1 / (1 / self.posteriors[result["label"]]["scale"] + result["reward"]),
-                4,
+                1
+                / ((1 / self.posteriors[result["label"]]["scale"]) + result["reward"]),
+                8,
             )
         return self
 
