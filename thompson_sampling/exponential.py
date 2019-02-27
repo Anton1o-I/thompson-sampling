@@ -1,18 +1,31 @@
-from typing import List
-from numpy.random import poisson
+from numpy.random import exponential
 from numpy import mean, percentile
 import operator
 from thompson_sampling.base import BaseThompsonSampling
 from thompson_sampling.priors import GammaPrior
+from typing import List
 
 
-class PoissonExperiment(BaseThompsonSampling):
+class ExponentialExperiment(BaseThompsonSampling):
     def __init__(
         self, arms: int = None, priors: GammaPrior = None, labels: list = None
     ):
         self._default = {"shape": 0.001, "scale": 1000}
         self._posterior = "gamma"
         super().__init__(arms, priors, labels)
+
+    def choose_arm(self):
+        """
+        Choose which arm to pull
+
+        Given the current posterior distributions this function will sample from
+        the posterior and find the max theta of all the available options
+        """
+
+        theta_est = {}
+        for key, _ in self.posteriors.items():
+            theta_est[key] = self._sample_posterior(1, key)
+        return min(theta_est.items(), key=operator.itemgetter(1))[0]
 
     def add_rewards(self, outcomes: List[dict]):
         """
@@ -23,9 +36,11 @@ class PoissonExperiment(BaseThompsonSampling):
 
         """
         for result in outcomes:
-            self.posteriors[result["label"]]["shape"] += result["reward"]
+            self.posteriors[result["label"]]["shape"] += 1
             self.posteriors[result["label"]]["scale"] = round(
-                1 / (1 / self.posteriors[result["label"]]["scale"] + 1), 4
+                1
+                / ((1 / self.posteriors[result["label"]]["scale"]) + result["reward"]),
+                8,
             )
         return self
 
@@ -38,9 +53,13 @@ class PoissonExperiment(BaseThompsonSampling):
         for k, _ in self.posteriors.items():
             pred_outcome = [
                 int(
-                    poisson(
-                        lam=self._avail_posteriors[self._posterior](
-                            size=1, **self.posteriors[k]
+                    exponential(
+                        scale=1
+                        / (
+                            self._avail_posteriors[self._posterior](
+                                size=1, **self.posteriors[k]
+                            )
+                            + 1e-100
                         ),
                         size=1,
                     )

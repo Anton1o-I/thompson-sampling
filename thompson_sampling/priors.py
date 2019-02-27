@@ -49,5 +49,4 @@ class GammaPrior(BasePrior):
             scale = 1 / rate
         elif all([isna(variance), isna(effective_size)]):
             raise ValueError("Must specify either variance or effective size")
-        return {"shape": round(shape), "scale": round(scale, 3)}
-
+        return {"shape": round(shape, 3), "scale": round(scale, 3)}
