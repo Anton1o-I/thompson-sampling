@@ -7,9 +7,11 @@ from typing import List
 
 
 class BernoulliExperiment(BaseThompsonSampling):
+        _default = {"a": 1, "b": 1}
+        _posterior = "beta"
+        
     def __init__(self, arms: int = None, priors: BetaPrior = None, labels: list = None):
-        self._default = {"a": 1, "b": 1}
-        self._posterior = "beta"
+
         super().__init__(arms, priors, labels)
 
     def add_rewards(self, outcomes: List[dict]):

@@ -7,11 +7,13 @@ from typing import List
 
 
 class ExponentialExperiment(BaseThompsonSampling):
+    _default = {"shape": 0.001, "scale": 1000}
+    _posterior = "gamma"
+
     def __init__(
         self, arms: int = None, priors: GammaPrior = None, labels: list = None
     ):
-        self._default = {"shape": 0.001, "scale": 1000}
-        self._posterior = "gamma"
+
         super().__init__(arms, priors, labels)
 
     def choose_arm(self):

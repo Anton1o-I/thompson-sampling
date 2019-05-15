@@ -4,7 +4,7 @@ from thompson_sampling.priors import GammaPrior
 from pandas import Series
 
 
-class TestBernoulliExperiment:
+class TestPoissonExperiment:
     def test_init_arms(self):
         exper = PoissonExperiment(3)
         assert len(exper.posteriors) == 3

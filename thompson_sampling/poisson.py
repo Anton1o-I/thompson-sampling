@@ -7,11 +7,13 @@ from thompson_sampling.priors import GammaPrior
 
 
 class PoissonExperiment(BaseThompsonSampling):
+    _default = {"shape": 0.001, "scale": 1000}
+    _posterior = "gamma"
+
     def __init__(
         self, arms: int = None, priors: GammaPrior = None, labels: list = None
     ):
-        self._default = {"shape": 0.001, "scale": 1000}
-        self._posterior = "gamma"
+
         super().__init__(arms, priors, labels)
 
     def add_rewards(self, outcomes: List[dict]):
