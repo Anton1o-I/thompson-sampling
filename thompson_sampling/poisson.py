@@ -13,7 +13,6 @@ class PoissonExperiment(BaseThompsonSampling):
     def __init__(
         self, arms: int = None, priors: GammaPrior = None, labels: list = None
     ):
-
         super().__init__(arms, priors, labels)
 
     def add_rewards(self, outcomes: List[dict]):

@@ -13,7 +13,6 @@ class ExponentialExperiment(BaseThompsonSampling):
     def __init__(
         self, arms: int = None, priors: GammaPrior = None, labels: list = None
     ):
-
         super().__init__(arms, priors, labels)
 
     def choose_arm(self):

@@ -11,7 +11,6 @@ class BernoulliExperiment(BaseThompsonSampling):
         _posterior = "beta"
         
     def __init__(self, arms: int = None, priors: BetaPrior = None, labels: list = None):
-
         super().__init__(arms, priors, labels)
 
     def add_rewards(self, outcomes: List[dict]):
