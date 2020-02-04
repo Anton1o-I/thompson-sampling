@@ -17,3 +17,4 @@ dist/
 !Sample_Bernoulli.ipynb
 !Sample_Poisson.ipynb
 !Sample_Exponential.ipynb
+thompson/*
