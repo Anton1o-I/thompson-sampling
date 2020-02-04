@@ -9,7 +9,7 @@ from typing import List
 class BernoulliExperiment(BaseThompsonSampling):
     _default = {"a": 1, "b": 1}
     _posterior = "beta"
-        
+
     def __init__(self, arms: int = None, priors: BetaPrior = None, labels: list = None):
         super().__init__(arms, priors, labels)
 
